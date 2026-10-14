@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Events>
+    <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+        <System>
+            <EventID>4771</EventID>
+            <TimeCreated SystemTime="2026-10-14T14:30:00.000Z" />
+        </System>
+        <EventData>
+            <Data Name="TargetUserName">jsmith</Data>
+            <Data Name="IpAddress">192.168.100.20</Data>
+            <Data Name="Status">0x18</Data>
+            <Data Name="ServiceName">krbtgt/corp.example.test</Data>
+        </EventData>
+    </Event>
+
+    <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+        <System>
+            <EventID>4771</EventID>
+            <TimeCreated SystemTime="2026-10-14T14:31:00.000Z" />
+        </System>
+        <EventData>
+            <Data Name="TargetUserName">jsmith</Data>
+            <Data Name="IpAddress">192.168.100.20</Data>
+            <Data Name="Status">0x18</Data>
+            <Data Name="ServiceName">krbtgt/corp.example.test</Data>
+        </EventData>
+    </Event>
+
+    <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+        <System>
+            <EventID>4768</EventID>
+            <TimeCreated SystemTime="2026-10-14T14:32:00.000Z" />
+        </System>
+        <EventData>
+            <Data Name="TargetUserName">sjohnson</Data>
+            <Data Name="IpAddress">192.168.100.20</Data>
+            <Data Name="Status">0x0</Data>
+            <Data Name="ServiceName">krbtgt</Data>
+        </EventData>
+    </Event>
+</Events>
