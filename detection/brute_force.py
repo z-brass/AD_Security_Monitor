@@ -13,6 +13,9 @@ def detect_brute_force(events):
     for event in events:
         if event.get("event_id") != 4771:
             continue
+        # counting only invalid kerberos pre-auth events
+        if event.get("status", "").lower() != "0x18":
+            continue
 
         ip = event.get("source_ip")
         timestamp_text = event.get("timestamp")
@@ -21,10 +24,14 @@ def detect_brute_force(events):
         if not ip or not timestamp_text:
             continue
 
-        # converting timestamp string to Python datetime object  
-        timestamp = datetime.fromisoformat(
-            timestamp_text.replace("Z", "+00:00")
-        )
+        # converting timestamp string to Python datetime object, with an exception  
+        try:
+            timestamp = datetime.fromisoformat(
+                timestamp_text.replace("Z", "+00:00")
+            )
+        except ValueError:
+            # skips event if timestamp is incorrectly formatted
+            continue
 
         if ip not in failed_logins_by_ip:
             failed_logins_by_ip[ip] = []
