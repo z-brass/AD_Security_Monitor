@@ -25,6 +25,7 @@ def parse_event(root):
         "event_id": int(event_id),
         "timestamp": timestamp,
         "username": event_data.get("TargetUserName"),
+        "actor": event_data.get("SubjectUserName"),
         "source_ip": event_data.get("IpAddress"),
         "status": event_data.get("Status"),
         "service_name": event_data.get("ServiceName")

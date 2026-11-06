@@ -35,11 +35,11 @@ def display_alert(alert):
 def main():
     events = parse_file(FILE_PATH)
 
-    # Run both detection rules.
+    # Run both detection rules
     brute_force_alerts = detect_brute_force(events)
     account_creation_alerts = detect_account_creation(events)
 
-    # Combine the results.
+    # Combine the results
     alerts = brute_force_alerts + account_creation_alerts
 
     print(f"Events analyzed: {len(events)}")
