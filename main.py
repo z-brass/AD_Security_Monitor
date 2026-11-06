@@ -21,6 +21,8 @@ def main():
         print(f"Rule: {alert['rule']}")
         print(f"Severity: {alert['severity']}")
         print(f"Source IP: {alert['source_ip']}")
+        print(f"Targeted Users: {', '.join(alert['targeted_users'])}")
+        print(f"Status Codes: {', '.join(alert['status_codes'])}")
         print(f"Failed attempts: {alert['failed_attempts']}")
         print(f"Window start: {alert['window_start']}")
         print(f"Window end: {alert['window_end']}")

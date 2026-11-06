@@ -166,6 +166,14 @@ class TestBruteForceDetection(unittest.TestCase):
             {"192.168.100.20", "192.168.100.30"}
         )
 
+    def test_alert_includes_targeted_username_and_status(self):
+        events = [make_event(i) for i in range(5)]
+
+        alerts = detect_brute_force(events)
+
+        self.assertEqual(len(alerts), 1)
+        self.assertEqual(alerts[0]["targeted_users"], ["jsmith"])
+        self.assertEqual(alerts[0]["status_codes"], ["0x18"])
 
 if __name__ == "__main__":
     unittest.main()
@@ -183,3 +191,4 @@ if __name__ == "__main__":
 ## Handles malformed timestamps without crashing
 ## Filters by status code, including case-insensitive matching
 ## Two or more IPs reaching threshold successfully generate alerts
+## Five qualifying auth failures generate alerts while identifying username & status code

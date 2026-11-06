@@ -36,7 +36,11 @@ def detect_brute_force(events):
         if ip not in failed_logins_by_ip:
             failed_logins_by_ip[ip] = []
 
-        failed_logins_by_ip[ip].append(timestamp)
+        failed_logins_by_ip[ip].append({
+            "timestamp": timestamp,
+            "username": event.get("username"),
+            "status": event.get("status")
+        })
 
         ''' ### What we know so far ###
 
@@ -50,26 +54,43 @@ def detect_brute_force(events):
     alerts = []
 
     # Checking each IP for repeated failures WITHIN 5 MINUTES
-    for ip, timestamps in failed_logins_by_ip.items():
-        timestamps.sort()
+    for ip, attempts in failed_logins_by_ip.items():
+        attempts.sort(key=lambda event: event["timestamp"])
         window_start = 0
 
-        for window_end in range(len(timestamps)):
-            current_time = timestamps[window_end]
+        for window_end in range(len(attempts)):
+            current_time = attempts[window_end]["timestamp"]
 
             # removing attempts older than the 5 minute window
-            while (current_time - timestamps[window_start] > TIME_WINDOW):
+            while (
+                current_time - attempts[window_start]["timestamp"] > TIME_WINDOW
+            ):
                 window_start += 1
 
             attempt_count = window_end - window_start + 1
 
+
             if attempt_count >= FAILED_ATTEMPT_THRESHOLD:
+                targeted_users = sorted({
+                    attempt["username"]
+                    for attempt in attempts[window_start:window_end + 1]
+                    if attempt["username"]
+                })
+
+                status_codes = sorted({
+                    attempt["status"]
+                    for attempt in attempts[window_start:window_end + 1]
+                    if attempt["status"]
+                })
+
                 alerts.append({
                     "rule": "AUTH-001",
                     "severity": "Medium",
                     "source_ip": ip,
+                    "targeted_users": targeted_users,
+                    "status_codes": status_codes,
                     "failed_attempts": attempt_count,
-                    "window_start": timestamps[window_start].isoformat(),
+                    "window_start": attempts[window_start]["timestamp"].isoformat(),
                     "window_end": current_time.isoformat(),
                     "description": (
                         "Repeated Kerberos pre-authentication "
