@@ -3,6 +3,7 @@ from pathlib import Path
 from parsers.windows_events import parse_file 
 from detection.brute_force import detect_brute_force
 from detection.account_creation import detect_account_creation
+from detection.account_lockout import detect_account_lockout
 
 #print("Project directory:", BASE_DIR)
 #print("Sample events file path:", FILE_PATH)
@@ -38,6 +39,7 @@ def main():
     # Run both detection rules
     brute_force_alerts = detect_brute_force(events)
     account_creation_alerts = detect_account_creation(events)
+    account_lockout_alerts = detect_account_lockout(events)
 
     # Combine the results
     alerts = brute_force_alerts + account_creation_alerts
